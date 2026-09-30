@@ -1,0 +1,7 @@
+#!/bin/bash
+text="$*"
+length=${#text}
+border=$(printf '%*s' $((length + 2)) '' | tr ' ' '-')
+printf '+%s+\n' "$border"
+printf '| %s |\n' "$text"
+printf '+%s+\n' "$border"
