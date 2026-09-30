@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 program"
+    exit 1
+fi
+if [ ! -f "$1" ]; then
+    echo "File not found: $1"
+    exit 1
+fi
+chmod +x "$1"
+sudo cp "$1" /usr/local/bin/
+echo "Registered: $(basename "$1")"
