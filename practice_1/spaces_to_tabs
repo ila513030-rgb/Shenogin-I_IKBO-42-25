@@ -1,6 +1,0 @@
-#!/bin/bash
-if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 input output"
-    exit 1
-fi
-sed 's/    /\t/g' "$1" > "$2"
