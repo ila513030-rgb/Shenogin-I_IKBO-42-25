@@ -1,8 +1,33 @@
-# Задание 4
+# Задача 4. Идентификаторы в файле
 
-Программа выводит все идентификаторы из указанного файла без повторений.
+## Задание
+
+Написать программу для вывода всех идентификаторов (по правилам C/C++ или Java) в файле без повторений.
+
+## Решение
 
 ```bash
-chmod +x identifiers
-./identifiers hello.c
+grep -oE '\b[A-Za-z_][A-Za-z0-9_]*\b' "$1" | sort -u | tr '\n' ' '
 ```
+
+## Проверка на `hello.c`
+
+Файл `hello.c`:
+
+```c
+#include <stdio.h>
+
+int main(void) {
+    printf("Hello, world!\n");
+    return 0;
+}
+```
+
+Запуск:
+
+```text
+$ ./task4 hello.c
+h hello include int main n printf return stdio void world
+```
+
+Результат соответствует примеру в задании.
