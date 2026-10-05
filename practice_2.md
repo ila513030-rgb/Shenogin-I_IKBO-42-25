@@ -289,33 +289,58 @@ target 2.0.0 и 1.0.0 не имеют зависимостей.
 
 ## Решение
 
-Для решения версии удобно кодировать целыми числами и задавать логические ограничения. Root требует версию foo из ветки 1.x и target из ветки 2.x. Если выбирается foo 1.1.0, дополнительно требуются left и right. Их ограничения должны быть совместимы с выбранной версией shared.
-
-Пример каркаса модели:
+Версии пакетов кодируются целыми числами: `10` соответствует версии 1.0.0, `11` — 1.1.0, `20` — 2.0.0. Значение `0` означает, что зависимый пакет не устанавливается.
 
 ```minizinc
-var 10..11: foo;
-var 10..20: shared;
-var 10..20: target;
+var {10,11}: foo;
+var {0,10}: left;
+var {0,10}: right;
+var {0,10,20}: shared;
+var {10,20}: target;
 
 constraint target = 20;
 
-constraint
-    (foo = 10) \/
-    (foo = 11 /\ shared = 10);
+constraint (foo = 11 -> left = 10 /\ right = 10);
+constraint (foo = 10 -> left = 0 /\ right = 0);
+
+constraint (left = 10 -> shared >= 10);
+constraint (right = 10 -> shared = 10);
+
+constraint (shared = 10 -> target = 10);
 
 solve satisfy;
 
 output [
-  "foo = ", show(foo), "\n",
-  "shared = ", show(shared), "\n",
-  "target = ", show(target)
+    "foo = ", show(foo), "\n",
+    "left = ", show(left), "\n",
+    "right = ", show(right), "\n",
+    "shared = ", show(shared), "\n",
+    "target = ", show(target)
 ];
 ```
 
+Версия `foo 1.1.0` приводит к установке `left 1.0.0` и `right 1.0.0`. Они требуют `shared 1.0.0`, а эта версия `shared` требует `target 1.x`. При этом `root` требует `target 2.x`, поэтому возникает конфликт.
+
+Следовательно, необходимо выбрать `foo 1.0.0`, у которого нет дополнительных зависимостей.
+
 ## Вывод
 
-Ограничения зависимостей могут приводить к конфликтам версий. MiniZinc позволяет формально описать требования и найти набор совместимых версий.
+```text
+foo = 10
+left = 0
+right = 0
+shared = 0
+target = 20
+```
+
+В обозначениях версий:
+
+```text
+foo 1.0.0
+target 2.0.0
+```
+
+Пакеты `left`, `right` и `shared` не требуются.
 
 ---
 
