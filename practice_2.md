@@ -352,34 +352,72 @@ target 2.0.0
 
 ## Решение
 
-Необходимо отделить универсальную модель `.mzn` от конкретных данных `.dzn`. В модели задаются множества пакетов и версий, массивы зависимостей и общие ограничения, а конкретные названия, версии и связи передаются отдельным набором данных.
+Модель разделяется на два файла: универсальный `model.mzn` и файл конкретных данных `data.dzn`.
 
-Общий принцип:
+### model.mzn
 
 ```minizinc
 int: N;
 set of int: PACKAGES = 1..N;
+int: D;
+set of int: DEPENDENCIES = 1..D;
 
-array[PACKAGES] of int: version_min;
-array[PACKAGES] of int: version_max;
+array[PACKAGES] of int: min_version;
+array[PACKAGES] of int: max_version;
 array[PACKAGES] of var int: selected;
 
+array[DEPENDENCIES] of int: depends_on;
+array[DEPENDENCIES] of int: required_min;
+array[DEPENDENCIES] of int: required_max;
+
 constraint forall(p in PACKAGES)(
-    selected[p] >= version_min[p] /\
-    selected[p] <= version_max[p]
+    selected[p] >= min_version[p] /\
+    selected[p] <= max_version[p]
+);
+
+constraint forall(d in DEPENDENCIES)(
+    selected[depends_on[d]] >= required_min[d] /\
+    selected[depends_on[d]] <= required_max[d]
 );
 
 solve satisfy;
+
+output [
+    "package ", show(p), " = ", show(selected[p]), "\n"
+    | p in PACKAGES
+];
 ```
 
-Пример данных:
+### data.dzn
 
 ```minizinc
 N = 3;
-version_min = [10, 10, 10];
-version_max = [11, 20, 20];
+D = 2;
+
+min_version = [10, 18, 10];
+max_version = [15, 23, 20];
+
+depends_on = [2, 3];
+required_min = [18, 10];
+required_max = [23, 20];
 ```
+
+Номера пакетов в примере:
+
+```text
+1 — menu
+2 — dropdown
+3 — icons
+```
+
+Для решения другой задачи файл `model.mzn` менять не требуется: достаточно задать другой набор значений в `data.dzn`.
 
 ## Вывод
 
-Универсальная модель не должна содержать конкретные имена и версии из одного примера. Конкретный экземпляр задачи задаётся только данными, благодаря чему одну модель можно использовать для разных наборов пакетов.
+```text
+package 1 = 10
+package 2 = 18
+package 3 = 10
+```
+
+Таким образом, универсальная модель отделена от конкретных данных и может применяться к разным наборам пакетов и версий.
