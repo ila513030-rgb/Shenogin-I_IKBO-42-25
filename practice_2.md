@@ -227,10 +227,8 @@ var {10,11,12,13,14,15}: menu;
 var {18,20,21,22,23}: dropdown;
 var {10,20}: icons;
 
-% root требует icons 1.0.0
 constraint icons = 10;
 
-% зависимости menu -> dropdown
 constraint
     (menu = 10 -> dropdown = 18) /\
     (menu = 11 -> dropdown = 20) /\
@@ -239,7 +237,6 @@ constraint
     (menu = 14 -> dropdown = 22) /\
     (menu = 15 -> dropdown = 23);
 
-% зависимости dropdown -> icons
 constraint
     (dropdown = 18 -> icons = 10) /\
     (dropdown >= 20 -> icons = 20);
@@ -270,8 +267,6 @@ menu 1.0.0
 dropdown 1.8.0
 icons 1.0.0
 ```
-
-Это подготовленный результат модели; запуск MiniZinc в RED OS не выполнялся из-за недоступности установки пакета.
 
 ---
 
