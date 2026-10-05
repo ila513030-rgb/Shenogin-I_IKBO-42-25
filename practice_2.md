@@ -32,7 +32,7 @@ python3 -m pip show matplotlib
 python3 -m pip show matplotlib | grep -E '^(Name|Version|Summary|Location|Requires):'
 ```
 
-## Реальный вывод
+## Вывод
 
 ```text
 Name: matplotlib
@@ -56,13 +56,9 @@ Requires: contourpy, cycler, fonttools, kiwisolver, numpy, packaging, pillow, py
 git clone https://github.com/matplotlib/matplotlib.git
 ```
 
-## Реальный результат
+## Результат
 
 Репозиторий успешно клонирован в каталог `matplotlib`. Получение объектов и определение изменений завершились на 100%.
-
-## Вывод
-
-В RED OS была получена реальная служебная информация об установленном matplotlib 3.11.2, определены его основные зависимости и место установки. Также исходный код matplotlib был успешно получен непосредственно из Git-репозитория.
 
 ---
 
@@ -92,7 +88,7 @@ npm --version
 npm view express
 ```
 
-## Реальный вывод
+## Вывод
 
 В выводе были получены следующие основные сведения:
 
@@ -119,13 +115,9 @@ Fast, unopinionated, minimalist web framework
 git clone https://github.com/expressjs/express.git
 ```
 
-## Реальный результат
+## Результат
 
 Репозиторий успешно клонирован в каталог `express`. Получение объектов и определение изменений завершились на 100%.
-
-## Вывод
-
-В RED OS была реально получена служебная информация о Express 5.2.1 через npm. Были рассмотрены версия, лицензия, зависимости и другие метаданные. Исходный код Express также успешно получен напрямую из Git-репозитория.
 
 ---
 
