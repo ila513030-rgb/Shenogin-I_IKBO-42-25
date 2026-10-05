@@ -129,45 +129,48 @@ git clone https://github.com/expressjs/express.git
 
 ## Решение
 
-Пример Graphviz-кода для представления зависимостей matplotlib:
+Для matplotlib был создан файл `matplotlib.dot`:
 
 ```dot
-digraph matplotlib {
-    matplotlib -> numpy;
-    matplotlib -> pillow;
-    matplotlib -> packaging;
-    matplotlib -> pyparsing;
-    matplotlib -> python_dateutil;
-    matplotlib -> contourpy;
-    matplotlib -> cycler;
-    matplotlib -> fonttools;
-    matplotlib -> kiwisolver;
+digraph G {
+    matplotlib -> {numpy pillow packaging pyparsing contourpy cycler fonttools kiwisolver};
 }
 ```
 
-Пример Graphviz-кода для express:
-
-```dot
-digraph express {
-    express -> accepts;
-    express -> body_parser;
-    express -> content_type;
-    express -> cookie;
-    express -> debug;
-    express -> router;
-}
-```
-
-Сохранённый файл `.dot` преобразуется в изображение командой:
+Изображение графа создано командой:
 
 ```bash
 dot -Tpng matplotlib.dot -o matplotlib.png
+```
+
+Для express был создан файл `express.dot`:
+
+```dot
+digraph G {
+    express -> {accepts body_parser content_type cookie debug router};
+}
+```
+
+Изображение графа создано командой:
+
+```bash
 dot -Tpng express.dot -o express.png
+```
+
+Для проверки наличия созданных изображений использована команда:
+
+```bash
+ls -lh matplotlib.png express.png
 ```
 
 ## Вывод
 
-Graphviz позволяет представить зависимости пакета в виде ориентированного графа: пакет является вершиной, а стрелки ведут к его зависимостям.
+```text
+-rw-r--r--. 1 ilyaw ilyaw 37K ... express.png
+-rw-r--r--. 1 ilyaw ilyaw 45K ... matplotlib.png
+```
+
+В результате были созданы два PNG-файла с графами зависимостей: `express.png` размером 37 КБ и `matplotlib.png` размером 45 КБ.
 
 ---
 
